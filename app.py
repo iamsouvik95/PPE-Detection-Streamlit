@@ -140,19 +140,27 @@ if model is not None:
     elif source_option == "Live Feed":
         st.write("Click 'Start' to use your webcam.")
         
-        # WEBRTC CONFIGURATION
-        # UPDATED: Added Open Relay (Free TURN) to fix 'sendto' errors and connection drops
+        # WEBRTC CONFIGURATION - THE GOLDEN CONFIGURATION
+        # This list includes 5+ servers to guarantee a connection
         rtc_configuration = RTCConfiguration(
             {"iceServers": [
-                # 1. Free Public TURN Server (Open Relay Project)
-                # This helps punch through firewalls when STUN fails
+                # Google's public STUN servers (Highly Reliable)
+                {"urls": ["stun:stun.l.google.com:19302"]},
+                {"urls": ["stun:stun1.l.google.com:19302"]},
+                {"urls": ["stun:stun2.l.google.com:19302"]},
+                
+                # Mozilla's public STUN server
+                {"urls": ["stun:stun.services.mozilla.com"]},
+                
+                # Segway's public STUN server
+                {"urls": ["stun:stun.segway.com:3478"]},
+                
+                # The Open Relay Project (TURN - Relays traffic if STUN fails)
                 {
                     "urls": ["turn:openrelay.metered.ca:80"],
                     "username": "openrelayproject",
                     "credential": "openrelayproject"
-                },
-                # 2. Backup Google STUN Server
-                {"urls": ["stun:stun.l.google.com:19302"]}
+                }
             ]}
         )
 
