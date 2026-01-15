@@ -98,7 +98,7 @@ def video_frame_callback(frame):
     return frame
 
 # --- 5. MAIN APP LOGIC ---
-st.title("🚧 Safety Equipment Detection")
+st.title("🚧 YOLOv8 Safety Equipment Detection")
 st.write("Detect PPE (Boots, Hardhats, Vests, etc.) in images, videos, or live feed.")
 
 source_option = st.selectbox(
@@ -140,28 +140,10 @@ if model is not None:
     elif source_option == "Live Feed":
         st.write("Click 'Start' to use your webcam.")
         
-        # WEBRTC CONFIGURATION - THE GOLDEN CONFIGURATION
-        # This list includes 5+ servers to guarantee a connection
+        # WEBRTC CONFIGURATION
+        # STUN servers are necessary for the browser to connect to the cloud server
         rtc_configuration = RTCConfiguration(
-            {"iceServers": [
-                # Google's public STUN servers (Highly Reliable)
-                {"urls": ["stun:stun.l.google.com:19302"]},
-                {"urls": ["stun:stun1.l.google.com:19302"]},
-                {"urls": ["stun:stun2.l.google.com:19302"]},
-                
-                # Mozilla's public STUN server
-                {"urls": ["stun:stun.services.mozilla.com"]},
-                
-                # Segway's public STUN server
-                {"urls": ["stun:stun.segway.com:3478"]},
-                
-                # The Open Relay Project (TURN - Relays traffic if STUN fails)
-                {
-                    "urls": ["turn:openrelay.metered.ca:80"],
-                    "username": "openrelayproject",
-                    "credential": "openrelayproject"
-                }
-            ]}
+            {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
         )
 
         webrtc_streamer(
