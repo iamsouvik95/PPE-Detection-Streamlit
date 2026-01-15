@@ -98,7 +98,7 @@ def video_frame_callback(frame):
     return frame
 
 # --- 5. MAIN APP LOGIC ---
-st.title("🚧 YOLOv8 Safety Equipment Detection")
+st.title("🚧 Safety Equipment Detection")
 st.write("Detect PPE (Boots, Hardhats, Vests, etc.) in images, videos, or live feed.")
 
 source_option = st.selectbox(
@@ -157,3 +157,4 @@ if model is not None:
 
 else:
     st.warning("Waiting for model to load...")
+
