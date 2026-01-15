@@ -141,9 +141,19 @@ if model is not None:
         st.write("Click 'Start' to use your webcam.")
         
         # WEBRTC CONFIGURATION
-        # STUN servers are necessary for the browser to connect to the cloud server
+        # UPDATED: Added Open Relay (Free TURN) to fix 'sendto' errors and connection drops
         rtc_configuration = RTCConfiguration(
-            {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+            {"iceServers": [
+                # 1. Free Public TURN Server (Open Relay Project)
+                # This helps punch through firewalls when STUN fails
+                {
+                    "urls": ["turn:openrelay.metered.ca:80"],
+                    "username": "openrelayproject",
+                    "credential": "openrelayproject"
+                },
+                # 2. Backup Google STUN Server
+                {"urls": ["stun:stun.l.google.com:19302"]}
+            ]}
         )
 
         webrtc_streamer(
@@ -157,4 +167,3 @@ if model is not None:
 
 else:
     st.warning("Waiting for model to load...")
-
